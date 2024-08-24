@@ -52,7 +52,7 @@ contract CrowdFunding {
         string memory _description,
         uint256 _goal,
         uint256 _deadline
-    ) public payable onlyOwner {
+    ) public payable{
         // her i check if the deadline being passed is not in the past
 
         require(
