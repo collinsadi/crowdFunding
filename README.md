@@ -1,13 +1,3 @@
-# Sample Hardhat Project
+# Crowdfunding Contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
-```
+This smart contract allows any user to create a crowd funding campaign and other users can donate to the campaign and when the campaign ends the creator of the campaign which is the benefactor, get's to receive all the funds generated from the campaign
