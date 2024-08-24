@@ -2,7 +2,6 @@
 pragma solidity ^0.8.26;
 
 contract CrowdFunding {
-
     // this struct defines what a campaign should have
     struct Campaign {
         string title;
@@ -26,8 +25,7 @@ contract CrowdFunding {
         uint256 campaignId
     );
 
-
-// i will emit this later in the code when donation is received
+    // i will emit this later in the code when donation is received
 
     event DonationReceived(address sender, uint256 amount, uint256 campaignId);
 
@@ -42,7 +40,7 @@ contract CrowdFunding {
     // this is a mapping to hold benefactor of each address and their campaign index
     mapping(address => uint256) public addressToCampaign;
 
-// this would run only when the contract is being deployed
+    // this would run only when the contract is being deployed
     constructor() {
         owner = msg.sender;
     }
@@ -55,16 +53,21 @@ contract CrowdFunding {
         uint256 _goal,
         uint256 _deadline
     ) public payable onlyOwner {
-
-        // her i check if the 
+        // her i check if the deadline being passed is not in the past
 
         require(
             _deadline > block.timestamp,
             "Campaign deadline cannot be in the past"
         );
-        require(_goal > 0.1 ether, "Campaign goal must be at least 1 ETH");
+
+        // i check if the campaign goal is more than 0.1 ethereum
+        require(_goal > 0.1 ether, "Campaign goal must be at least 0.1 ETH");
+
+        // here i set the deadline
 
         uint256 deadline = block.timestamp + _deadline;
+
+        // here i push the new campaigns to the campains array to store it on the blockchain
 
         campaigns.push(
             Campaign({
@@ -79,7 +82,11 @@ contract CrowdFunding {
             })
         );
 
+        // here i update the mapping
+
         addressToCampaign[msg.sender] = campaigns.length;
+
+        // here i emit an event that campaign have been created
 
         emit CampaignCreated(
             _title,
@@ -90,6 +97,8 @@ contract CrowdFunding {
             campaigns.length + 1
         );
     }
+
+    // this function allows users to donate to a campaign
 
     function donateToCampaign(uint256 campaignId) public payable {
         require(msg.value >= 0.1 ether, "Minimum amount to donate is 0.1 ETH");
@@ -124,15 +133,15 @@ contract CrowdFunding {
         emit CampaignEnded(campaignId);
     }
 
+    //  this functions allows users to browse through campaigns
     function getCampaigns() public view returns (Campaign[] memory) {
         return campaigns;
     }
 
-    function getSingleCampaign(uint256 campaignId)
-        public
-        view
-        returns (Campaign memory)
-    {
+    // this function allows users to get details of a single campsign
+    function getSingleCampaign(
+        uint256 campaignId
+    ) public view returns (Campaign memory) {
         return campaigns[campaignId - 1];
     }
 }
